@@ -10,7 +10,9 @@
     "build": "ember build -prod",
     "start": "ember server",
     "test": "ember test",
-    "lint:ts": "tslint -c tslint.json 'src/**/*.ts' -t codeFrame"
+    "test:server": "ember test --server",
+    "lint:ts": "tslint -c tslint.json 'src/**/*.ts' -t codeFrame",
+    "test-dbg": "node --nolazy --inspect-brk=9229 ./node_modules/.bin/ember test"
   },
   "devDependencies": {
     "@glimmer/application": "^0.13.0",
@@ -27,11 +29,12 @@
     "ember-cli-inject-live-reload": "^1.6.1",
     "ember-cli-tslint": "^0.1.3",
     "ember-cli-uglify": "^2.0.0-beta.1",
+    "pretender": "2.1.2",
     "qunitjs": "^2.3.3",
     "typescript": "~2.6.0"
   },
   "engines": {
-    "node": ">= 4.0"
+    "node": ">= 6.0"
   },
   "private": true
 }
