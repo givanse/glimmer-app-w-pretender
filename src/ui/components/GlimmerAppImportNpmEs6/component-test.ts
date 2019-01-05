@@ -2,20 +2,11 @@ import hbs from '@glimmer/inline-precompile';
 import { render, setupRenderingTest } from '@glimmer/test-helpers';
 import Pretender, {FakeXMLHttpRequest, ResponseHandler, SetupCallback} from 'pretender';
 
-/**
- *
- * @param status HTTP response status code
- * @param payload
- */
-function json(status: number, payload: any): ResponseHandler {
-  return function(request: FakeXMLHttpRequest) {
-    const data = {photo: `${payload} ${request.params.id}`};
-    return [status, { 'Content-Type': 'text/json' }, JSON.stringify(data)];
-  };
-}
-
 const setup: SetupCallback = function() {
-  this.get('/api/v1/photos/:id', json(200, 'photo: '));
+  this.get('/api/v1/photos/:id', function(request) {
+    const data = {src: `photo-${request.params.id}.jpg`};
+    return [status, { 'Content-Type': 'text/json' }, JSON.stringify(data)];
+  });
 };
 
 const server = new Pretender(setup);
@@ -31,5 +22,7 @@ module('Component: GlimmerAppImportNpmEs6', function(hooks) {
 
     const response = await fetch('/api/v1/photos/300');
     assert.equal(response.status, 200);
+    const data = await response.json();
+    assert.equal(data.src, 'photo-300.jpg');
   });
 });
